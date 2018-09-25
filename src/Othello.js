@@ -7,7 +7,7 @@ import {
   withRouter
 } from "react-router-dom";
 
-import { BLACK, WHITE, EMPTY, INITIAL_BOARD, COL, COLXCOL } from "./Modules.js"
+import { BLACK, WHITE, EMPTY, INITIAL_BOARD, COL, COLXCOL } from "./Modules.js";
 import "./Othello.css";
 
 function Square(props) {
@@ -123,26 +123,100 @@ class Othello extends Component {
       history: [
         {
           squares: INITIAL_BOARD,
+          xNumbers: 2,
+          oNumbers: 2
         }
       ],
       stepNumber: 0,
-      xIsNext: true,
+      xIsNext: true
     };
+  }
+
+  calculationWinner(xNumbers, oNumbers){
+    if(xNumbers + oNumbers < 64){
+      return null;
+    }else if(xNumbers + oNumbers == 64){
+      if(xNumbers > oNumbers){
+        return 'BLACK';
+      }else{
+        return 'WHITE';
+      }
+    }else {
+      return 'No Winner';
+    }
+  }
+
+  flipSquares(squares, position, xIsNext) {
+    let modifiedBoard = null;
+    // Calculate row and col of the starting position
+    let [startX, startY] = [position % 8, (position - (position % 8)) / 8];
+
+    if (squares[position] !== null) {
+      return null;
+    }
+
+    // Iterate all directions, these numbers are the offsets in the array to reach next sqaure
+    [1, 7, 8, 9, -1, -7, -8, -9].forEach(offset => {
+      let flippedSquares = modifiedBoard
+        ? modifiedBoard.slice()
+        : squares.slice();
+      let atLeastOneMarkIsFlipped = false;
+      let [lastXpos, lastYPos] = [startX, startY];
+
+      for (let y = position + offset; y < 64; y = y + offset) {
+        // Calculate the row and col of the current square
+        let [xPos, yPos] = [y % 8, (y - (y % 8)) / 8];
+
+        // Fix when board is breaking into a new row or col
+        if (Math.abs(lastXpos - xPos) > 1 || Math.abs(lastYPos - yPos) > 1) {
+          break;
+        }
+
+        // Next square was occupied with the opposite color
+        if (flippedSquares[y] === (!xIsNext ? BLACK : WHITE)) {
+          flippedSquares[y] = xIsNext ? "X" : "O";
+          atLeastOneMarkIsFlipped = true;
+          [lastXpos, lastYPos] = [xPos, yPos];
+          continue;
+        }
+        // Next aquare was occupied with the same color
+        else if (
+          flippedSquares[y] === (xIsNext ? BLACK : WHITE) &&
+          atLeastOneMarkIsFlipped
+        ) {
+          flippedSquares[position] = xIsNext ? BLACK : WHITE;
+          modifiedBoard = flippedSquares.slice();
+        }
+        break;
+      }
+    });
+
+    return modifiedBoard;
   }
 
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
-    const current = history[history.length - 1];
-    var squares = current.squares.slice();
+    const current = history[this.state.stepNumber];
+    const squares = current.squares.slice();
     if (squares[i]) {
       return;
     }
-    squares[i] = this.state.xIsNext ? BLACK : WHITE;
-    console.log(squares);
+    const changedSquares = this.flipSquares(squares, i, this.state.xIsNext);
+    console.log(changedSquares);
+
+    const xNumbers = changedSquares.reduce((sum, present) => {
+      return present === BLACK ? sum + 1 : sum;
+    }, 0);
+    const oNumbers = changedSquares.reduce((sum, present) => {
+      return present === WHITE ? sum + 1 : sum;
+    }, 0);
+
     this.setState({
       history: history.concat([
         {
-          squares: squares
+          squares: changedSquares,
+          xNumbers: xNumbers,
+          oNumbers: oNumbers,
         }
       ]),
       stepNumber: history.length,
@@ -150,17 +224,17 @@ class Othello extends Component {
     });
   }
 
-  jumpTo(step){
+  jumpTo(step) {
     this.setState({
       stepNumber: step,
-      xIsNext: (step % 2) === 0,
+      xIsNext: step % 2 === 0
     });
   }
 
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculationWinner(current.squares);
+    const winner = this.calculationWinner(current.xNumbers, current.oNumbers);
 
     const moves = history.map((step, move) => {
       const desc = move ? "Go to move #" + move : "Go to game start";
@@ -172,10 +246,13 @@ class Othello extends Component {
     });
 
     let status;
+    let scores;
     if (winner) {
       status = "Winner: " + winner;
+      scores = "BLACK: " + (current.xNumbers) + ", " + "WHITE: " + (current.oNumbers);
     } else {
-      status = "Next player: " + (this.state.xIsNext ? "X" : "O");
+      status = "Next player: " + (this.state.xIsNext ? BLACK : WHITE);
+      scores = "BLACK: " + (current.xNumbers) + ", " + "WHITE: " + (current.oNumbers);
     }
 
     return (
@@ -185,31 +262,12 @@ class Othello extends Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
+          <div>{scores}</div>
           <ol>{moves}</ol>
         </div>
       </div>
     );
   }
-}
-
-function calculationWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
 }
 
 // ========================================
