@@ -36,15 +36,20 @@ ol, ul {
   outline: none;
 }
 
+.available-square{
+  cursor: pointer;
+}
+
+.non-available-square{
+  cursor: not-allowed;
+}
+
 .kbd-navigation .square:focus {
   background: #ddd;
 }
 
 .game {
   display: flex;
-  flex-direction: row;
-}
-
-.game-info {
-  margin-left: 20px;
+  flex-flow: row wrap;
+  justify-content: center;
 }
