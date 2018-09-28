@@ -104,4 +104,5 @@ ul {
 
 .history-list {
   font-weight: lighter;
+  z-index: 9000;
 }

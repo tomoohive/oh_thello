@@ -13,6 +13,7 @@ class About extends Component {
   render() {
     return (
       <div className="about-page">
+        <p>&emsp;</p>
         <h1 className="caption">Oh-thelloとは?</h1>
         <div className="contents">
           要するに単なるオセロです。
