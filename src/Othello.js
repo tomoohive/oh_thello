@@ -293,9 +293,9 @@ class Othello extends Component {
 
     if (availablePutOn.length === 0 && availablePutOnComp.length === 0) {
       if (current.xNumbers === 0) {
-        winner = "WHITE";
+        winner = "YELLOW";
       } else if (current.oNumbers === 0) {
-        winner = "BLACK";
+        winner = "BLUE";
       }
     }
 
