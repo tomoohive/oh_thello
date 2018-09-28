@@ -1,6 +1,5 @@
-body {
-  font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
+body{
+  background: #FFCF2F;
 }
 
 ol, ul {
@@ -18,18 +17,36 @@ ol, ul {
 }
 
 .square {
-  background: #fff;
-  border: 1px solid #999;
+  background: #ffffff;
+  border-radius: 2px;
   float: left;
   font-size: 24px;
   font-weight: bold;
   line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
+  height: 30px;
+  margin-right: 3px;
+  margin-top: 3px;
   padding: 0;
   text-align: center;
-  width: 34px;
+  width: 30px;
+}
+
+.marker {
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  margin-left: 10%;
+  margin-top: 10%;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.12), 0 2px 2px 0 rgba(0,0,0,.24);
+}
+
+.marker.black {
+  background: #7ACAC7;
+}
+
+.marker.white {
+  background: #FFCF2F;
+  
 }
 
 .square:focus {
@@ -37,19 +54,55 @@ ol, ul {
 }
 
 .available-square{
-  cursor: pointer;
+  background: #ffe4e1;
 }
 
 .non-available-square{
-  cursor: not-allowed;
+
 }
 
 .kbd-navigation .square:focus {
   background: #ddd;
 }
 
+.restart-button{
+  font-size: 15px;
+  position: fixed;
+  top: 87px;
+  right: -15px;
+  transform: rotate(90deg);
+  z-index: 9001;
+}
+
 .game {
+  padding-top: 70px;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column wrap;
   justify-content: center;
+  align-items: center;
+}
+
+.game-board{
+  position: fixed;
+  top: 60px;
+  z-index: 9000;
+  background: #FFCF2F;
+}
+
+.game-info{
+  position: fixed;
+  top: 320px;
+  width: 300px;
+  padding-top: 10px;
+  padding-left: 40px;
+  text-align: left;
+  background: #FFCF2F;
+}
+
+.game-history{
+  padding-top: 320px;
+}
+
+.history-list{
+  font-weight: lighter;
 }

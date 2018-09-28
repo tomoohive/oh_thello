@@ -1,21 +1,16 @@
 import React, { Component } from "react";
-import {
-  BrowserRouter,
-  Router,
-  Route,
-  Link,
-  withRouter
-} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
-import { BLACK, WHITE, EMPTY, INITIAL_BOARD, COL, COLXCOL } from "./Modules.js";
+import { BLACK, WHITE, INITIAL_BOARD} from "./Modules.js";
 import "./Othello.css";
 
 function Square(props) {
   let markerAvailable = `square ${props.isAvailable ? 'available-square' : 'non-available-square'}`;
+  let colorMarker = props.value === BLACK ? 'marker black' : props.value === WHITE ? 'marker white' : '';
 
   return (
     <div className={markerAvailable} onClick={props.onClick}>
-      {props.value}
+      {props.value ? <div className={colorMarker}></div> : ''}
     </div>
   );
 }
@@ -140,7 +135,7 @@ class Othello extends Component {
   calculationWinner(xNumbers, oNumbers) {
     if (xNumbers + oNumbers < 64) {
       return null;
-    } else if (xNumbers + oNumbers == 64) {
+    } else if (xNumbers + oNumbers === 64) {
       if (xNumbers > oNumbers) {
         return "BLACK";
       } else {
@@ -222,7 +217,6 @@ class Othello extends Component {
     }
 
     const changedSquares = this.flipSquares(squares, i, this.state.xIsNext);
-    console.log(changedSquares);
 
     if (changedSquares === null) {
       return;
@@ -277,7 +271,7 @@ class Othello extends Component {
       const desc = move ? "Go to move #" + move : "Go to game start";
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <div className="history-list" onClick={() => this.jumpTo(move)}>{desc}</div>
         </li>
       );
     });
@@ -298,22 +292,24 @@ class Othello extends Component {
     if (winner) {
       status = "Winner: " + winner;
       scores =
-        "BLACK: " + current.xNumbers + ", " + "WHITE: " + current.oNumbers;
+        "BLUE▶︎ " + current.xNumbers + " ⇄ YELLOW▶︎ " + current.oNumbers;
     } else {
-      status = "Next player: " + (this.state.xIsNext ? BLACK : WHITE);
+      status = "PLAYER ➡︎ " + (this.state.xIsNext ? 'BLUE' : 'YELLOW');
       scores =
-        "BLACK: " + current.xNumbers + ", " + "WHITE: " + current.oNumbers;
+        "BLUE▶︎" + current.xNumbers + " ⇄ YELLOW▶︎" + current.oNumbers;
     }
 
     return (
       <div className="game">
+        <div className="restart-button" onClick={() => this.restartGame()}>Re:Start</div>
         <div className="game-board">
           <Board squares={current.squares} availablePutOn={availablePutOn} onClick={i => this.handleClick(i)} />
         </div>
         <div className="game-info">
           <div>{status}</div>
           <div>{scores}</div>
-          <div onClick={() => this.restartGame()}>Restart</div>
+        </div>
+        <div className="game-history">
           <ol>{moves}</ol>
         </div>
       </div>
