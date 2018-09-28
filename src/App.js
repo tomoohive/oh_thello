@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Route} from "react-router-dom";
-import './App.css';
-import Othello from "./Othello"
-import About from "./About"
+import React, { Component } from "react";
+import { BrowserRouter, Route } from "react-router-dom";
+import "./App.css";
+import Othello from "./Othello";
+import About from "./About";
 
 class App extends Component {
   render() {

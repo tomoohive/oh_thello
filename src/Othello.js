@@ -1,16 +1,23 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 
-import { BLACK, WHITE, INITIAL_BOARD} from "./Modules.js";
+import { BLACK, WHITE, INITIAL_BOARD } from "./Modules.js";
 import "./Othello.css";
 
 function Square(props) {
-  let markerAvailable = `square ${props.isAvailable ? 'available-square' : 'non-available-square'}`;
-  let colorMarker = props.value === BLACK ? 'marker black' : props.value === WHITE ? 'marker white' : '';
+  let markerAvailable = `square ${
+    props.isAvailable ? "available-square" : "non-available-square"
+  }`;
+  let colorMarker =
+    props.value === BLACK
+      ? "marker black"
+      : props.value === WHITE
+        ? "marker white"
+        : "";
 
   return (
     <div className={markerAvailable} onClick={props.onClick}>
-      {props.value ? <div className={colorMarker}></div> : ''}
+      {props.value ? <div className={colorMarker} /> : ""}
     </div>
   );
 }
@@ -244,7 +251,7 @@ class Othello extends Component {
         }
       ]),
       stepNumber: history.length,
-      xIsNext: canTurnColor,
+      xIsNext: canTurnColor
     });
   }
 
@@ -255,10 +262,10 @@ class Othello extends Component {
     });
   }
 
-  restartGame(){
+  restartGame() {
     this.jumpTo(0);
     this.setState({
-      history: this.state.history.slice(0,1)
+      history: this.state.history.slice(0, 1)
     });
   }
 
@@ -271,19 +278,24 @@ class Othello extends Component {
       const desc = move ? "Go to move #" + move : "Go to game start";
       return (
         <li key={move}>
-          <div className="history-list" onClick={() => this.jumpTo(move)}>{desc}</div>
+          <div className="history-list" onClick={() => this.jumpTo(move)}>
+            {desc}
+          </div>
         </li>
       );
     });
 
     let availablePutOn = this.searchAvailable(current.xIsBack, current.squares);
-    let availablePutOnComp = this.searchAvailable(!current.xIsBack, current.squares);
+    let availablePutOnComp = this.searchAvailable(
+      !current.xIsBack,
+      current.squares
+    );
 
-    if((availablePutOn.length === 0) && (availablePutOnComp.length === 0)){
-      if(current.xNumbers === 0){
-        winner = 'WHITE';
-      } else if(current.oNumbers === 0){
-        winner = 'BLACK';
+    if (availablePutOn.length === 0 && availablePutOnComp.length === 0) {
+      if (current.xNumbers === 0) {
+        winner = "WHITE";
+      } else if (current.oNumbers === 0) {
+        winner = "BLACK";
       }
     }
 
@@ -291,19 +303,23 @@ class Othello extends Component {
     let scores;
     if (winner) {
       status = "Winner: " + winner;
-      scores =
-        "BLUE▶︎ " + current.xNumbers + " ⇄ YELLOW▶︎ " + current.oNumbers;
+      scores = "BLUE▶︎ " + current.xNumbers + " ⇄ YELLOW▶︎ " + current.oNumbers;
     } else {
-      status = "PLAYER ➡︎ " + (this.state.xIsNext ? 'BLUE' : 'YELLOW');
-      scores =
-        "BLUE▶︎" + current.xNumbers + " ⇄ YELLOW▶︎" + current.oNumbers;
+      status = "PLAYER ➡︎ " + (this.state.xIsNext ? "BLUE" : "YELLOW");
+      scores = "BLUE▶︎" + current.xNumbers + " ⇄ YELLOW▶︎" + current.oNumbers;
     }
 
     return (
       <div className="game">
-        <div className="restart-button" onClick={() => this.restartGame()}>Re:Start</div>
+        <div className="restart-button" onClick={() => this.restartGame()}>
+          Re:Start
+        </div>
         <div className="game-board">
-          <Board squares={current.squares} availablePutOn={availablePutOn} onClick={i => this.handleClick(i)} />
+          <Board
+            squares={current.squares}
+            availablePutOn={availablePutOn}
+            onClick={i => this.handleClick(i)}
+          />
         </div>
         <div className="game-info">
           <div>{status}</div>

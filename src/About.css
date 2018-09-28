@@ -1,28 +1,28 @@
-.about-page{
+.about-page {
   padding-top: 20%;
   padding-bottom: 20%;
   weidth: 100%;
   height: 100%;
-  background: #7ACAC7;
+  background: #7acac7;
   text-align: left;
   padding-left: 10px;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,.12), 0 2px 2px 0 rgba(0,0,0,.24);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
 }
 
-.caption{
+.caption {
   font-size: 24px;
 }
 
-.contents{
+.contents {
   font-size: 13px;
 }
 
-.github-icon{
+.github-icon {
   margin-top: 30px;
   font-weight: lighter;
 }
 
-#FooterMenu{
+#FooterMenu {
   display: block;
   width: 100%;
   position: fixed;
@@ -33,7 +33,7 @@
   padding-left: 40%;
 }
 
-#FooterBtn{
+#FooterBtn {
   display: inline-block;
   text-decoration: none;
   color: #fff;
