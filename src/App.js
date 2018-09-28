@@ -13,8 +13,8 @@ class App extends Component {
         </header>
         <BrowserRouter>
           <div>
-            <Route exact path="oh-thello-app-stylish.herokuapp.com/" component={About} />
-            <Route exact path="oh-thello-app-stylish.herokuapp.com/othello" component={Othello} />
+            <Route exact path="/" component={About} />
+            <Route exact path="/othello" component={Othello} />
           </div>
         </BrowserRouter>
       </div>
